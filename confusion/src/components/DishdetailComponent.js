@@ -7,7 +7,7 @@ class Dishdetail extends Component {
       return <div></div>;
     }
 
-    const cmnts = comments.map(comment => {
+    const theComments = comments.map(comment => {
       return (
         <li key={comment.id}>
           <p>{comment.comment}</p>
@@ -25,7 +25,7 @@ class Dishdetail extends Component {
     return (
       <div className=" col-12 col-md-5 m-1">
         <h4>Comments</h4>
-        <ul className="list-unstyled">{cmnts}</ul>
+        <ul className="list-unstyled">{theComments}</ul>
       </div>
     );
   }

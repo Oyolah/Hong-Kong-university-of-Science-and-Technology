@@ -1,5 +1,14 @@
 import React, { Component } from "react";
-import { Card, CardImg, CardBody, CardText, CardTitle } from "reactstrap";
+import {
+  Card,
+  CardImg,
+  CardText,
+  CardBody,
+  CardTitle,
+  Breadcrumb,
+  BreadcrumbItem
+} from "reactstrap";
+import { Link } from "react-router-dom";
 
 class Dishdetail extends Component {
   renderComments(comments) {
@@ -17,7 +26,7 @@ class Dishdetail extends Component {
               year: "numeric",
               month: "long",
               day: "2-digit"
-            }).format(new Date(comment.date))}
+            }).format(new Date(this.comment.date))}
           </p>
         </li>
       );
@@ -55,9 +64,23 @@ class Dishdetail extends Component {
     const dishItem = this.renderDish(dish);
     const commentItem = this.renderComments(dish.comments);
     return (
-      <div className="row">
-        {dishItem}
-        {commentItem}
+      <div className="container">
+        <div className="row">
+          <Breadcrumb>
+            <BreadcrumbItem>
+              <Link to="/menu">Menu</Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem active>{this.props.dish.name}</BreadcrumbItem>
+          </Breadcrumb>
+          <div className="col-12">
+            <h3>{this.props.dish.name}</h3>
+            <hr />
+          </div>
+        </div>
+        <div className="row">
+          {dishItem}
+          {commentItem}
+        </div>
       </div>
     );
   }

@@ -24,8 +24,7 @@ function About(props) {
       </Media>
     );
   };
-  //Function that iterates over all leaders and for each of those leaders
-  //Run the RenderLeader function passing in the leader parameter.
+
   const leaders = props.leaders.map(leader => {
     return <RenderLeader leader={leader} />;
   });

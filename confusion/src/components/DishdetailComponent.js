@@ -1,6 +1,14 @@
 import React, { Component } from "react";
+import { Control, LocalForm, Errors } from "react-redux-form";
 import {
   Card,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  Label,
+  Row,
+  Col,
+  Button,
   CardImg,
   CardText,
   CardBody,
@@ -10,7 +18,40 @@ import {
 } from "reactstrap";
 import { Link } from "react-router-dom";
 
+const required = val => val && val.length;
+const maxLength = len => val => !val || val.length <= len;
+const minLength = len => val => val && val.length >= len;
+const isNumber = val => !isNaN(Number(val));
+
 class Dishdetail extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isNavOpen: false,
+      isModalOpen: false
+    };
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.toggleNav = this.toggleNav.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
+  }
+
+  toggleNav() {
+    this.setState({
+      isNavOpen: !this.state.isNavOpen
+    });
+  }
+  toggleModal() {
+    this.setState({
+      isModalOpen: !this.state.isModalOpen
+    });
+  }
+  handleSubmit(values) {
+    console.log("Current State is: " + JSON.stringify(values));
+    alert("Current State is: " + JSON.stringify(values));
+    // event.preventDefault();
+  }
+
   renderComments(comments) {
     if (comments == null) {
       return <div></div>;
@@ -72,6 +113,75 @@ class Dishdetail extends Component {
             </BreadcrumbItem>
             <BreadcrumbItem active>{this.props.dish.name}</BreadcrumbItem>
           </Breadcrumb>
+          <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
+            <ModalHeader toggle={this.toggleModal}>Submit Comment</ModalHeader>
+            <ModalBody>
+              <LocalForm onSubmit={values => this.handleSubmit(values)}>
+                <Label htmlFor="rating">Rating</Label>
+                <Row className="form-group">
+                  <Col>
+                    <Control.select
+                      model=".rating"
+                      id="rating"
+                      name="rating"
+                      className="form-control"
+                    >
+                      <option> 1</option>
+                      <option> 2</option>
+                      <option> 3</option>
+                    </Control.select>
+                  </Col>
+                </Row>
+                <Label htmlFor="yourname">Your Name</Label>
+                <Row className="form-group">
+                  <Col>
+                    <Control.text
+                      model=".yourname"
+                      id="yourname"
+                      name="yourname"
+                      placeholder="Your Name"
+                      className="form-control"
+                      validators={{
+                        required,
+                        minLength: minLength(3),
+                        maxLength: maxLength(15)
+                      }}
+                    />
+                    <Errors
+                      className="text-danger"
+                      model=".yourname"
+                      show="touched"
+                      messages={{
+                        required: "Required ",
+                        minLength: "Must be greater than 2 characters",
+                        maxLength: "Must be 15 characters or less"
+                      }}
+                    />
+                  </Col>
+                </Row>
+
+                <Label htmlFor="message">Your Feedback</Label>
+                <Row className="form-group">
+                  <Col>
+                    <Control.textarea
+                      model=".message"
+                      id="message"
+                      name="message"
+                      rows="6"
+                      className="form-control"
+                    />
+                  </Col>
+                </Row>
+                <Row className="form-group">
+                  <Col md={{ size: 6, offset: 0 }}>
+                    <Button type="submit" color="primary">
+                      Submit
+                    </Button>
+                  </Col>
+                </Row>
+              </LocalForm>
+            </ModalBody>
+          </Modal>
           <div className="col-12">
             <h3>{this.props.dish.name}</h3>
             <hr />
@@ -80,6 +190,9 @@ class Dishdetail extends Component {
         <div className="row">
           {dishItem}
           {commentItem}
+          <Button outline onClick={this.toggleModal}>
+            <span className="	fa fa-pencil fa-lg"></span> Submit comment
+          </Button>
         </div>
       </div>
     );

@@ -2,22 +2,21 @@ import React from "react";
 import {
   Card,
   CardImg,
-  CardText,
   CardBody,
+  CardText,
   CardTitle,
   CardSubtitle,
 } from "reactstrap";
+import { Loading } from "./LoadingComponent";
 import { baseUrl } from "../shared/baseUrl";
 import { FadeTransform } from "react-animation-components";
 
-import { Loading } from "./LoadingComponent";
-
-function RenderCard({ item, isLoading, errMess }) {
+function RenderCard({ item, isLoading, errMsg }) {
   if (isLoading) {
     return <Loading />;
-  } else if (errMess) {
-    return <h4>{errMess}</h4>;
-  } else
+  } else if (errMsg) {
+    return <h4>{errMsg}</h4>;
+  } else {
     return (
       <FadeTransform
         in
@@ -37,6 +36,7 @@ function RenderCard({ item, isLoading, errMess }) {
         </Card>
       </FadeTransform>
     );
+  }
 }
 
 function Home(props) {
@@ -47,7 +47,7 @@ function Home(props) {
           <RenderCard
             item={props.dish}
             isLoading={props.dishesLoading}
-            errMess={props.dishesErrMess}
+            errMsg={props.dishesErrmsg}
           />
         </div>
         <div className="col-12 col-md m-1">
@@ -58,7 +58,11 @@ function Home(props) {
           />
         </div>
         <div className="col-12 col-md m-1">
-          <RenderCard item={props.leader} />
+          <RenderCard
+            item={props.leader}
+            isLoading={props.leaderLoading}
+            errMess={props.leaderErrMess}
+          />
         </div>
       </div>
     </div>

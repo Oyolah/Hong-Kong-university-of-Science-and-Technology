@@ -5,28 +5,40 @@ import {
   Card,
   CardBody,
   CardHeader,
-  Media
+  Media,
 } from "reactstrap";
 import { Link } from "react-router-dom";
+import { baseUrl } from "../shared/baseUrl";
+import { Stagger } from "react-animation-components";
 
-function About(props) {
-  const RenderLeader = ({ leader }) => {
-    return (
-      <Media className="mt-5">
-        <Media left className="mr-5">
-          <Media object src={leader.image} alt={leader.name} />
+function RenderLeader({ leader }) {
+  return (
+    <Stagger in>
+      <Media>
+        <Media left>
+          <Media
+            object
+            src={baseUrl + leader.image}
+            alt="Generic placeholder image"
+          />
         </Media>
-        <Media body>
-          <Media heading>{leader.name}</Media>
+        <Media body className="ml-4">
+          <Media heading>{leader.name};</Media>
           <p>{leader.designation}</p>
-          {leader.description}
+          <p>{leader.description}</p>
         </Media>
       </Media>
-    );
-  };
+    </Stagger>
+  );
+}
 
-  const leaders = props.leaders.map(leader => {
-    return <RenderLeader leader={leader} />;
+function About(props) {
+  const leaders = props.leaders.leaders.map((leader) => {
+    return (
+      <div key={leader.id}>
+        <RenderLeader leader={leader} />
+      </div>
+    );
   });
 
   return (

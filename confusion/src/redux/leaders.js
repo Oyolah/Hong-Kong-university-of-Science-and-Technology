@@ -1,11 +1,7 @@
 import * as ActionTypes from "./ActionTypes";
 
 export const Leaders = (
-  state = {
-    isLoading: true,
-    errMess: null,
-    leaders: [],
-  },
+  state = { isLoading: true, errMess: null, leaders: [] },
   action
 ) => {
   switch (action.type) {

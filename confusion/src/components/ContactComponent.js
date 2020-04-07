@@ -10,41 +10,44 @@ import {
 import { Link } from "react-router-dom";
 import { Control, Form, Errors } from "react-redux-form";
 
-const required = (val) => val && val.length;
-const maxLength = (len) => (val) => !val || val.length <= len;
-const minLength = (len) => (val) => val && val.length >= len;
-const isNumber = (val) => !isNaN(Number(val));
-const validEmail = (val) =>
-  /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
-
 class Contact extends Component {
   constructor(props) {
     super(props);
 
-    //the state will become managed by react-redux-form
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleSubmit(values) {
-    console.log("Current State is:" + JSON.stringify(values));
-    alert("Current State is:" + JSON.stringify(values));
+    this.props.postFeedback(
+      values.firstname,
+      values.lastname,
+      values.telnum,
+      values.email,
+      values.agree,
+      values.contactType,
+      values.message
+    );
     this.props.resetFeedbackForm();
-    this.props.postfeedback(values);
+    alert("Thank you for your feedback! " + JSON.stringify(values));
   }
 
   render() {
+    const required = (val) => val && val.length;
+    const maxLength = (len) => (val) => !val || val.length <= len;
+    const minLength = (len) => (val) => val && val.length >= len;
+    const isNumber = (val) => !isNaN(Number(val));
+    const validEmail = (val) =>
+      /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
+
     return (
       <div className="container">
         <div className="row">
           <Breadcrumb>
             <BreadcrumbItem>
-              <Link to="/home">home</Link>
+              <Link to="/home">Home</Link>
             </BreadcrumbItem>
             <BreadcrumbItem active>Contact Us</BreadcrumbItem>
           </Breadcrumb>
-          <div className="col-12">
-            <h3>Contact</h3>
-            <hr />
-          </div>
         </div>
         <div className="row row-content">
           <div className="col-12">
@@ -110,13 +113,13 @@ class Contact extends Component {
                     model=".firstname"
                     id="firstname"
                     name="firstname"
+                    placeholder="First Name"
                     className="form-control"
                     validators={{
                       required,
                       minLength: minLength(3),
                       maxLength: maxLength(15),
                     }}
-                    placeholder="First Name"
                   />
                   <Errors
                     className="text-danger"
@@ -168,7 +171,7 @@ class Contact extends Component {
                     model=".telnum"
                     id="telnum"
                     name="telnum"
-                    placeholder="Tel. number"
+                    placeholder="Tel. Number"
                     className="form-control"
                     validators={{
                       required,
@@ -185,6 +188,7 @@ class Contact extends Component {
                       required: "Required",
                       minLength: "Must be greater than 2 numbers",
                       maxLength: "Must be 15 numbers or less",
+                      isNumber: "Must be a number",
                     }}
                   />
                 </Col>
@@ -232,6 +236,7 @@ class Contact extends Component {
                 <Col md={{ size: 3, offset: 1 }}>
                   <Control.select
                     model=".contactType"
+                    type="select"
                     name="contactType"
                     className="form-control"
                   >
@@ -247,11 +252,12 @@ class Contact extends Component {
                 <Col md={10}>
                   <Control.textarea
                     model=".message"
+                    type="textarea"
                     id="message"
                     name="message"
                     rows="12"
                     className="form-control"
-                  />
+                  ></Control.textarea>
                 </Col>
               </Row>
               <Row className="form-group">

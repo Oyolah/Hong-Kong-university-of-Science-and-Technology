@@ -23,7 +23,7 @@ function RenderLeader({ leader, isLoading, errMess }) {
         <div class="col-12">
           <Media tag="li">
             <Media left href="#">
-              <Media src={baseUrl + leader.image} />
+              <Media object src={baseUrl + leader.image} alt={leader.name} />
             </Media>
             <Media
               body
